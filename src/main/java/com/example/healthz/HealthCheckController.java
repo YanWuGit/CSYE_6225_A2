@@ -21,7 +21,8 @@ public class HealthCheckController {
     @GetMapping
     public ResponseEntity<Void> checkHealth() {
         try (Connection connection = dataSource.getConnection()) {
-            if (connection.isValid(10)) {
+            dataSource.setLoginTimeout(3);
+            if (connection.isValid(1000)) {
                 return ResponseEntity.ok()
                         .header("Cache-Control", "no-cache, no-store, must-revalidate")
                         .header("Pragma", "no-cache")
